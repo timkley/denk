@@ -1,0 +1,68 @@
+{
+  "name": "timkley/denk",
+  "type": "project",
+  "description": "OpenAI helpers",
+  "license": "MIT",
+  "version": "0.0.1",
+  "authors": [
+    {
+      "name": "Tim Kleyersburg",
+      "email": "timkley@gmail.com"
+    }
+  ],
+  "require": {
+    "php": "^8.3",
+    "illuminate/collections": "^11.34",
+    "illuminate/http": "^11.34",
+    "illuminate/support": "^11.34",
+    "openai-php/client": "^0.10.3",
+    "symfony/http-client": "^7.1",
+    "vlucas/phpdotenv": "^5.6"
+  },
+  "require-dev": {
+    "laravel/pint": "^1.18",
+    "pestphp/pest": "^3.5",
+    "phpstan/phpstan": "^2.0",
+    "spatie/invade": "^2.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "Denk\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "pestphp/pest-plugin": true,
+      "php-http/discovery": true
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+      ],
+      "aliases": {
+      }
+    }
+  },
+  "scripts": {
+    "phpstan": [
+      "./vendor/bin/phpstan --memory-limit=2048M --configuration=phpstan.neon"
+    ],
+    "pint": [
+      "./vendor/bin/pint"
+    ],
+    "test": [
+      "./vendor/bin/pest"
+    ],
+    "prepush": [
+      "@phpstan",
+      "@pint",
+      "@test"
+    ]
+  }
+}
