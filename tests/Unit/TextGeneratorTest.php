@@ -1,17 +1,39 @@
 <?php
 
-use Denk\Denk;
+use Denk\DenkService;
 use Denk\Exceptions\DenkException;
 use Denk\Generators\TextGenerator;
 use Denk\ValueObjects\SystemMessage;
 use Denk\ValueObjects\UserMessage;
+use OpenAI\Responses\Chat\CreateResponse;
+
+function fakeText(array $responses = [])
+{
+    if (empty($responses)) {
+        $responses = [
+            CreateResponse::fake([
+                'choices' => [
+                    [
+                        'message' => [
+                            'content' => 'Hello!',
+                        ],
+                    ],
+                ],
+            ]),
+        ];
+    }
+
+    $denk = new DenkService(new OpenAI\Testing\ClientFake($responses));
+
+    return $denk->text();
+}
 
 it('returns the text generator', function () {
-    expect(Denk::text())->toBeInstanceOf(TextGenerator::class);
+    expect(fakeText())->toBeInstanceOf(TextGenerator::class);
 });
 
 it('accepts a prompt', function () {
-    $denk = Denk::text()
+    $denk = fakeText()
         ->prompt('This is my prompt');
 
     $invaded = invade($denk);
@@ -20,7 +42,7 @@ it('accepts a prompt', function () {
 });
 
 it('accepts messages', function () {
-    $denk = Denk::text()
+    $denk = fakeText()
         ->messages([
             new UserMessage('This is my prompt'),
         ]);
@@ -31,11 +53,11 @@ it('accepts messages', function () {
 });
 
 it('throws an exception when used without a prompt or messages', function () {
-    TextGenerator::fake()->generate();
+    fakeText()->generate();
 })->throws(DenkException::class);
 
 it('accepts a system prompt', function () {
-    $denk = Denk::text()
+    $denk = fakeText()
         ->prompt('What is your name?')
         ->systemPrompt('Answer as a pirate.');
 
@@ -46,13 +68,13 @@ it('accepts a system prompt', function () {
 });
 
 it('only accepts one system prompt', function () {
-    Denk::text()
+    fakeText()
         ->systemPrompt('Answer as a pirate.')
         ->systemPrompt('Answer as a pirate.');
 })->throws(DenkException::class);
 
 it('can set a model', function () {
-    $denk = Denk::text()
+    $denk = fakeText()
         ->model('gpt-4o-mini');
 
     $invaded = invade($denk);
@@ -61,11 +83,11 @@ it('can set a model', function () {
 });
 
 it('can not set an invalid model', function () {
-    Denk::text()->model('invalid-model');
+    fakeText()->model('invalid-model');
 })->throws(DenkException::class);
 
 it('generates text', function () {
-    $textGenerator = TextGenerator::fake();
+    $textGenerator = fakeText();
 
     expect($textGenerator->prompt('')->generate())->toBe('Hello!');
 });

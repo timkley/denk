@@ -6,8 +6,6 @@ namespace Denk\Generators;
 
 use Denk\Concerns\TextPrompts;
 use Denk\Exceptions\DenkException;
-use OpenAI;
-use OpenAI\Responses\Chat\CreateResponse;
 
 class TextGenerator extends Generator
 {
@@ -58,27 +56,5 @@ class TextGenerator extends Generator
         $content = data_get($data, 'choices.0.message.content');
 
         return $content;
-    }
-
-    /**
-     * @param  array<CreateResponse>  $responses
-     */
-    public static function fake(array $responses = []): self
-    {
-        if (empty($responses)) {
-            $responses = [
-                CreateResponse::fake([
-                    'choices' => [
-                        [
-                            'message' => [
-                                'content' => 'Hello!',
-                            ],
-                        ],
-                    ],
-                ]),
-            ];
-        }
-
-        return new self(new OpenAI\Testing\ClientFake($responses));
     }
 }

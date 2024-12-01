@@ -2,9 +2,14 @@
 
 namespace Tests;
 
-use PHPUnit\Framework\TestCase as BaseTestCase;
+use Denk\DenkServiceProvider;
 
-abstract class TestCase extends BaseTestCase
+abstract class TestCase extends \Orchestra\Testbench\TestCase
 {
-    //
+    protected function getPackageProviders($app): array
+    {
+        return [
+            DenkServiceProvider::class,
+        ];
+    }
 }

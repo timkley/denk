@@ -1,18 +1,42 @@
 <?php
 
-use Denk\Denk;
+use Denk\DenkService;
 use Denk\Exceptions\DenkException;
 use Denk\Generators\JsonGenerator;
-use Denk\Generators\TextGenerator;
 use Denk\ValueObjects\SystemMessage;
 use Denk\ValueObjects\UserMessage;
+use OpenAI\Responses\Chat\CreateResponse;
+
+function fakeJson(array $responses = [])
+{
+    if (empty($responses)) {
+        $responses = [
+            CreateResponse::fake([
+                'choices' => [
+                    [
+                        'message' => [
+                            'content' => json_encode([
+                                'title' => 'Fake title',
+                                'description' => 'Fake description',
+                            ]),
+                        ],
+                    ],
+                ],
+            ]),
+        ];
+    }
+
+    $denk = new DenkService(new OpenAI\Testing\ClientFake($responses));
+
+    return $denk->json();
+}
 
 it('returns the json generator', function () {
-    expect(Denk::json())->toBeInstanceOf(JsonGenerator::class);
+    expect(fakeJson())->toBeInstanceOf(JsonGenerator::class);
 });
 
 it('accepts a prompt', function () {
-    $denk = Denk::json()
+    $denk = fakeJson()
         ->prompt('This is my prompt');
 
     $invaded = invade($denk);
@@ -21,7 +45,7 @@ it('accepts a prompt', function () {
 });
 
 it('accepts messages', function () {
-    $denk = Denk::json()
+    $denk = fakeJson()
         ->messages([
             new UserMessage('This is my prompt'),
         ]);
@@ -32,11 +56,11 @@ it('accepts messages', function () {
 });
 
 it('throws an exception when used without a prompt or messages', function () {
-    TextGenerator::fake()->generate();
+    fakeJson()->generate();
 })->throws(DenkException::class);
 
 it('accepts a system prompt', function () {
-    $denk = Denk::json()
+    $denk = fakeJson()
         ->prompt('What is your name?')
         ->systemPrompt('Answer as a pirate.');
 
@@ -47,13 +71,13 @@ it('accepts a system prompt', function () {
 });
 
 it('only accepts one system prompt', function () {
-    Denk::json()
+    fakeJson()
         ->systemPrompt('Answer as a pirate.')
         ->systemPrompt('Answer as a pirate.');
 })->throws(DenkException::class);
 
 it('can set a model', function () {
-    $denk = Denk::json()
+    $denk = fakeJson()
         ->model('gpt-4o-mini');
 
     $invaded = invade($denk);
@@ -62,23 +86,23 @@ it('can set a model', function () {
 });
 
 it('can not set an invalid model', function () {
-    Denk::json()->model('gpt-4');
+    fakeJson()->model('gpt-4');
 })->throws(DenkException::class);
 
 it('needs a json model', function () {
-    Denk::json()
+    fakeJson()
         ->prompt('What is your name?')
         ->generate();
 })->throws(DenkException::class);
 
 it('generates json', function () {
-    $jsonGenerator = JsonGenerator::fake();
+    $jsonGenerator = fakeJson();
 
     expect($jsonGenerator->properties(['title' => 'string'])->prompt('')->generate())->toBe(['title' => 'Fake title', 'description' => 'Fake description']);
 });
 
 it('can format the messages correctly', function () {
-    $denk = Denk::json()
+    $denk = fakeJson()
         ->prompt('What is your name?')
         ->systemPrompt('Answer as a pirate.');
 

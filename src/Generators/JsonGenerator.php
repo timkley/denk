@@ -6,8 +6,6 @@ namespace Denk\Generators;
 
 use Denk\Concerns\TextPrompts;
 use Denk\Exceptions\DenkException;
-use OpenAI;
-use OpenAI\Responses\Chat\CreateResponse;
 
 class JsonGenerator extends Generator
 {
@@ -98,30 +96,5 @@ class JsonGenerator extends Generator
         $json = json_decode($content, associative: true, flags: JSON_THROW_ON_ERROR);
 
         return $json;
-    }
-
-    /**
-     * @param  array<CreateResponse>  $responses
-     */
-    public static function fake(array $responses = []): self
-    {
-        if (empty($responses)) {
-            $responses = [
-                CreateResponse::fake([
-                    'choices' => [
-                        [
-                            'message' => [
-                                'content' => json_encode([
-                                    'title' => 'Fake title',
-                                    'description' => 'Fake description',
-                                ]),
-                            ],
-                        ],
-                    ],
-                ]),
-            ];
-        }
-
-        return new self(new OpenAI\Testing\ClientFake($responses));
     }
 }

@@ -3,7 +3,7 @@
   "type": "project",
   "description": "OpenAI helpers",
   "license": "MIT",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "authors": [
     {
       "name": "Tim Kleyersburg",
@@ -23,7 +23,8 @@
     "laravel/pint": "^1.18",
     "pestphp/pest": "^3.5",
     "phpstan/phpstan": "^2.0",
-    "spatie/invade": "^2.1"
+    "spatie/invade": "^2.1",
+    "orchestra/testbench": "^9.6"
   },
   "autoload": {
     "psr-4": {
@@ -44,8 +45,10 @@
   "extra": {
     "laravel": {
       "providers": [
+        "Denk\\DenkServiceProvider"
       ],
       "aliases": {
+        "Denk": "Denk\\Facades\\Denk"
       }
     }
   },

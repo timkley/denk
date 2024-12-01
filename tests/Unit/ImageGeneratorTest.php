@@ -1,15 +1,37 @@
 <?php
 
-use Denk\Denk;
+use Denk\DenkService;
 use Denk\Exceptions\DenkException;
 use Denk\Generators\ImageGenerator;
+use OpenAI\Responses\Images\CreateResponse;
+
+function fakeImage(array $responses = [])
+{
+    if (empty($responses)) {
+        $responses = [
+            CreateResponse::fake(
+                [
+                    'data' => [
+                        [
+                            'url' => 'https://example.com/image.jpg',
+                        ],
+                    ],
+                ],
+            ),
+        ];
+    }
+
+    $denk = new DenkService(new OpenAI\Testing\ClientFake($responses));
+
+    return $denk->image();
+}
 
 it('returns the image generator', function () {
-    expect(Denk::image())->toBeInstanceOf(ImageGenerator::class);
+    expect(fakeImage())->toBeInstanceOf(ImageGenerator::class);
 });
 
 it('accepts a prompt', function () {
-    $denk = Denk::image()
+    $denk = fakeImage()
         ->prompt('This is my prompt');
 
     $invaded = invade($denk);
@@ -18,7 +40,7 @@ it('accepts a prompt', function () {
 });
 
 it('can set the size', function (string $input, string $output) {
-    $denk = Denk::image()
+    $denk = fakeImage()
         ->size($input);
 
     $invaded = invade($denk);
@@ -31,12 +53,12 @@ it('can set the size', function (string $input, string $output) {
 ]);
 
 it('does not set an invalid size', function () {
-    $denk = Denk::image()
+    $denk = fakeImage()
         ->size('invalid');
 })->throws(DenkException::class);
 
 it('can set the quality', function (string $quality) {
-    $denk = Denk::image()
+    $denk = fakeImage()
         ->quality($quality);
 
     $invaded = invade($denk);
@@ -48,16 +70,16 @@ it('can set the quality', function (string $quality) {
 ]);
 
 it('does not set an invalid quality', function () {
-    $denk = Denk::image()
+    $denk = fakeImage()
         ->quality('invalid');
 })->throws(DenkException::class);
 
 it('throws an exception when used without a prompt', function () {
-    ImageGenerator::fake()->generate();
+    fakeImage()->generate();
 })->throws(DenkException::class);
 
 it('generates an image', function () {
-    $imageGenerator = ImageGenerator::fake();
+    $imageGenerator = fakeImage();
 
     expect($imageGenerator->prompt('')->generate())->toBe('https://example.com/image.jpg');
 });
