@@ -8,24 +8,56 @@ The package name is derived from the German word "denken" which means "to think"
 composer require timkley/denk
 ```
 
-## Usage
+## How to use
 
 Make sure that you have an OpenAI API key. You can get one [here](https://platform.openai.com/signup).
 
-The package assumes that you've set the `OPENAI_API_KEY` environment variable.
+### Initialization
+
+#### Using Laravel
+
+The package comes with a service provider that will automatically register the OpenAI client. You can use the `Denk` facade to access the service.
+
+Make sure to publish the configuration file to set your API key.
+
+```bash
+php artisan vendor:publish --provider="Denk\DenkServiceProvider"
+```
+
+After that, you can use the `Denk` facade to access the service like this:
+
+```php
+use Denk\Facades\Denk;
+
+$text = Denk::text()->prompt('Once upon a time')->generate();
+```
+
+#### Manually or non-Laravel projects
+
+To initialize the service, you need create an OpenAI client and pass it to the DenkService.
+
+```php
+use Denk\DenkService;
+use OpenAI;
+
+$client = OpenAI::client('your-api-key');
+$denk = new DenkService($client);
+```
 
 ### Generating text
 
-To generate text, use the `Denk::text()` method. It uses the `chat` endpoint of the OpenAI API.
-
 ```php
-use Denk\Denk;
+use Denk\DenkService;
+use OpenAI;
+
+$client = OpenAI::client('your-api-key');
+$denk = new DenkService($client);
 
 // using only a simple prompt
-$text = Denk::text()->prompt('Once upon a time')->generate();
+$text = $denk->text()->prompt('Once upon a time')->generate();
 
 // set a system prompt
-$text = Denk::text()
+$text = $denk->text()
     ->prompt('Once upon a time')
     ->systemPrompt('Write as a pirate')
     ->generate();
@@ -35,7 +67,7 @@ $text = Denk::text()
 use Denk\Messages\SystemMessage;
 use Denk\Messages\UserMessage;
 
-$text = Denk::text()
+$text = $denk->text()
     ->messages([
         new SystemMessage('Write as a pirate'),
         new UserMessage('Once upon a time'),
@@ -53,12 +85,16 @@ $text = Denk::text()
 
 ### Generating JSON
 
-To generate [Structured Output](https://platform.openai.com/docs/guides/structured-outputs), you can use the `Denk::json()` method. Set the properties of the JSON object and provide a prompt, additionally you may also set a system prompt.
+To generate [Structured Output](https://platform.openai.com/docs/guides/structured-outputs), you can use the `json()` method. Set the properties of the JSON object and provide a prompt, additionally you may also set a system prompt.
 
 ```php
-use Denk\Denk;
+use Denk\DenkService;
+use OpenAI;
 
-$json = Denk::json()
+$client = OpenAI::client('your-api-key');
+$denk = new DenkService($client);
+
+$json = $denk->json()
     ->properties([
         'title' => [
             'type' => 'string',
@@ -80,12 +116,16 @@ $json = Denk::json()
 
 ### Generating Images
 
-To generate images, you can use the `Denk::image()` method. Set the properties of the image and provide a prompt.
+To generate images, you can use the `image()` method. Set the properties of the image and provide a prompt.
 
 ```php
-use Denk\Denk;
+use Denk\DenkService;
+use OpenAI;
 
-$image = Denk::image()
+$client = OpenAI::client('your-api-key');
+$denk = new DenkService($client);
+
+$image = $denk->image()
     ->prompt('A beautiful sunset over the ocean')
     ->size('square')
     ->quality('standard')
