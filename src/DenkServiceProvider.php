@@ -28,4 +28,9 @@ class DenkServiceProvider extends ServiceProvider
             return new DenkService(OpenAI::client($apiKey));
         });
     }
+
+    public static function fake(array $responses = []): void
+    {
+        app()->instance(DenkService::class, new DenkFake($responses));
+    }
 }
