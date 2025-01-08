@@ -13,6 +13,8 @@ trait TextPrompts
     /** @var MessageCollection<int, Message>|null */
     protected ?MessageCollection $messages = null;
 
+    protected float $temperature = 1.0;
+
     protected function getMessages(): MessageCollection
     {
         if ($this->messages === null) {
@@ -46,6 +48,13 @@ trait TextPrompts
     public function messages(array $messages): self
     {
         $this->messages = new MessageCollection($messages);
+
+        return $this;
+    }
+
+    public function temperature(float $temperature = 1.0): self
+    {
+        $this->temperature = $temperature;
 
         return $this;
     }

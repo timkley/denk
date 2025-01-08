@@ -32,6 +32,7 @@ class TextGenerator extends Generator
 
         $data = $this->client->chat()->create([
             'model' => $this->model,
+            'temperature' => $this->temperature,
             'messages' => $this->messages->toArray(),
         ]);
 

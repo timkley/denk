@@ -91,3 +91,12 @@ it('generates text', function () {
 
     expect($textGenerator->prompt('')->generate())->toBe('Hello!');
 });
+
+it('can set a temperature', function () {
+    $denk = fakeText()
+        ->temperature(0.5);
+
+    $invaded = invade($denk);
+
+    expect($invaded->temperature)->toBe(0.5);
+});

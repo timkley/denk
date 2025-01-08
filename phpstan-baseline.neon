@@ -1,0 +1,19 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Method Denk\\DenkFake\:\:__construct\(\) has parameter \$responses with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/DenkFake.php
+
+		-
+			message: '#^Method Denk\\DenkServiceProvider\:\:fake\(\) has parameter \$responses with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/DenkServiceProvider.php
+
+		-
+			message: '#^Method Denk\\Facades\\Denk\:\:fake\(\) has parameter \$responses with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Facades/Denk.php
