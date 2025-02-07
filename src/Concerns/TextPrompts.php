@@ -4,8 +4,6 @@ namespace Denk\Concerns;
 
 use Denk\Collections\MessageCollection;
 use Denk\Contracts\Message;
-use Denk\Exceptions\DenkException;
-use Denk\ValueObjects\SystemMessage;
 use Denk\ValueObjects\UserMessage;
 
 trait TextPrompts
@@ -27,17 +25,6 @@ trait TextPrompts
     public function prompt(string $content): self
     {
         $this->getMessages()->push(new UserMessage($content));
-
-        return $this;
-    }
-
-    public function systemPrompt(string $content): self
-    {
-        if ($this->getMessages()->filter(fn ($message) => $message instanceof SystemMessage)->isNotEmpty()) {
-            throw DenkException::onlyOneSystemMessage();
-        }
-
-        $this->getMessages()->push(new SystemMessage($content));
 
         return $this;
     }

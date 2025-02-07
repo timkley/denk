@@ -3,7 +3,6 @@
 use Denk\DenkService;
 use Denk\Exceptions\DenkException;
 use Denk\Generators\TextGenerator;
-use Denk\ValueObjects\SystemMessage;
 use Denk\ValueObjects\UserMessage;
 use OpenAI\Responses\Chat\CreateResponse;
 
@@ -58,20 +57,12 @@ it('throws an exception when used without a prompt or messages', function () {
 
 it('accepts a system prompt', function () {
     $denk = fakeText()
-        ->prompt('What is your name?')
-        ->systemPrompt('Answer as a pirate.');
+        ->prompt('What is your name?');
 
     $invaded = invade($denk);
 
     expect($invaded->messages[0])->toBeInstanceOf(UserMessage::class)->and($invaded->messages[0]->content)->toBe('What is your name?');
-    expect($invaded->messages[1])->toBeInstanceOf(SystemMessage::class)->and($invaded->messages[1]->content)->toBe('Answer as a pirate.');
 });
-
-it('only accepts one system prompt', function () {
-    fakeText()
-        ->systemPrompt('Answer as a pirate.')
-        ->systemPrompt('Answer as a pirate.');
-})->throws(DenkException::class);
 
 it('can set a model', function () {
     $denk = fakeText()

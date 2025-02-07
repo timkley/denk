@@ -18,11 +18,6 @@ class DenkException extends Exception
         return new self('You need to provide a prompt.');
     }
 
-    public static function onlyOneSystemMessage(): DenkException
-    {
-        return new self('You can only have one system message.');
-    }
-
     public static function openAiError(string $message): DenkException
     {
         return new self($message);

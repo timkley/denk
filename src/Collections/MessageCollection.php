@@ -3,7 +3,6 @@
 namespace Denk\Collections;
 
 use Denk\Contracts\Message;
-use Denk\ValueObjects\SystemMessage;
 use Illuminate\Support\Collection;
 
 /**
@@ -11,17 +10,8 @@ use Illuminate\Support\Collection;
  */
 class MessageCollection extends Collection
 {
-    /**
-     * @return Collection<int, Message>
-     */
-    public function sorted(): Collection
-    {
-        return $this->partition(fn ($message) => $message instanceof SystemMessage)
-            ->flatMap(fn ($partition) => $partition);
-    }
-
     public function toArray(): array
     {
-        return $this->sorted()->map(fn (Message $message) => $message->toArray())->all();
+        return $this->map(fn (Message $message) => $message->toArray())->all();
     }
 }
