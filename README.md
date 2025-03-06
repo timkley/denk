@@ -56,20 +56,13 @@ $denk = new DenkService($client);
 // using only a simple prompt
 $text = $denk->text()->prompt('Once upon a time')->generate();
 
-// set a system prompt
-$text = $denk->text()
-    ->prompt('Once upon a time')
-    ->systemPrompt('Write as a pirate')
-    ->generate();
-    
 // Manually provide messages
-
-use Denk\Messages\SystemMessage;
+use Denk\Messages\DeveloperMessage;
 use Denk\Messages\UserMessage;
 
 $text = $denk->text()
     ->messages([
-        new SystemMessage('Write as a pirate'),
+        new DeveloperMessage('Write as a pirate'),
         new UserMessage('Once upon a time'),
     ])
     ->generate();
