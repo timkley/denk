@@ -24,7 +24,7 @@
     "pestphp/pest": "^3.5",
     "phpstan/phpstan": "^2.0",
     "spatie/invade": "^2.1",
-    "orchestra/testbench": "^9.6"
+    "orchestra/testbench": "^9.6|^10.0"
   },
   "autoload": {
     "psr-4": {
