@@ -23,23 +23,8 @@ class DenkException extends Exception
         return new self($message);
     }
 
-    public static function invalidModel(string $model): DenkException
-    {
-        return new self("Invalid model: $model.");
-    }
-
     public static function noJsonModel(): DenkException
     {
         return new self('You need to provide a JSON model.');
-    }
-
-    public static function invalidSize(string $size): DenkException
-    {
-        return new self("Invalid size: $size.");
-    }
-
-    public static function invalidQuality(string $quality): DenkException
-    {
-        return new self("Invalid quality: $quality.");
     }
 }

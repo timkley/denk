@@ -73,10 +73,6 @@ it('can set a model', function () {
     expect($invaded->model)->toBe('gpt-4o-mini');
 });
 
-it('can not set an invalid model', function () {
-    fakeText()->model('invalid-model');
-})->throws(DenkException::class);
-
 it('generates text', function () {
     $textGenerator = fakeText();
 

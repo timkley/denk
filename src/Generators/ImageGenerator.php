@@ -12,6 +12,8 @@ class ImageGenerator extends Generator
 {
     protected ?string $prompt = null;
 
+    protected ?string $model = 'dall-e-3';
+
     protected ?string $size = 'square';
 
     protected ?string $quality = 'standard';
@@ -23,18 +25,15 @@ class ImageGenerator extends Generator
         return $this;
     }
 
+    public function model(string $model): self
+    {
+        $this->model = $model;
+
+        return $this;
+    }
+
     public function size(string $size): self
     {
-        if (! in_array($size, ['square', 'landscape', 'portrait'])) {
-            throw DenkException::invalidSize($size);
-        }
-
-        match ($size) {
-            'square' => $size = '1024x1024',
-            'portrait' => $size = '1024x1792',
-            'landscape' => $size = '1792x1024',
-        };
-
         $this->size = $size;
 
         return $this;
@@ -42,10 +41,6 @@ class ImageGenerator extends Generator
 
     public function quality(string $quality): self
     {
-        if (! in_array($quality, ['standard', 'hd'])) {
-            throw DenkException::invalidQuality($quality);
-        }
-
         $this->quality = $quality;
 
         return $this;
@@ -58,10 +53,10 @@ class ImageGenerator extends Generator
         }
 
         $data = $this->client->images()->create([
-            'model' => 'dall-e-3',
+            'model' => $this->model,
             'prompt' => $this->prompt,
-            'size' => '256x256',
-            'quality' => 100,
+            'size' => $this->size,
+            'quality' => $this->quality,
         ]);
 
         if (data_get($data, 'error')) {

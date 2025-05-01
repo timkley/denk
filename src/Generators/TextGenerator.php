@@ -15,10 +15,6 @@ class TextGenerator extends Generator
 
     public function model(string $model): self
     {
-        if (! in_array($model, ['gpt-4o-mini', 'gpt-4o', 'gpt-4-turbo', 'gpt-4', 'gpt-3.5-turbo'])) {
-            throw DenkException::invalidModel($model);
-        }
-
         $this->model = $model;
 
         return $this;

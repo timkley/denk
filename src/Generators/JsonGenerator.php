@@ -20,10 +20,6 @@ class JsonGenerator extends Generator
 
     public function model(string $model): self
     {
-        if (! in_array($model, ['gpt-4o-mini', 'gpt-4o'])) {
-            throw DenkException::invalidModel($model);
-        }
-
         $this->model = $model;
 
         return $this;
