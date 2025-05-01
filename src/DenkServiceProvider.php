@@ -25,7 +25,12 @@ class DenkServiceProvider extends ServiceProvider
                 throw new \Exception('OpenAI API key is not set');
             }
 
-            return new DenkService(OpenAI::client($apiKey));
+            $client = OpenAI::factory()
+                ->withApiKey($apiKey)
+                ->withBaseUri(config()->string('denk.base_uri', 'api.openai.com/v1'))
+                ->make();
+
+            return new DenkService($client);
         });
     }
 

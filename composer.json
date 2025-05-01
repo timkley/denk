@@ -3,7 +3,7 @@
   "type": "project",
   "description": "OpenAI helpers",
   "license": "MIT",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "authors": [
     {
       "name": "Tim Kleyersburg",
@@ -16,15 +16,15 @@
     "illuminate/http": "^11.34|^12.0",
     "illuminate/support": "^11.34|^12.0",
     "openai-php/client": "^0.10.3",
-    "symfony/http-client": "^7.1",
-    "vlucas/phpdotenv": "^5.6"
+    "symfony/http-client": "^7.2.4",
+    "vlucas/phpdotenv": "^5.6.2"
   },
   "require-dev": {
-    "laravel/pint": "^1.18",
-    "pestphp/pest": "^3.5",
-    "phpstan/phpstan": "^2.0",
+    "laravel/pint": "^1.22",
+    "pestphp/pest": "^3.8.2",
+    "phpstan/phpstan": "^2.1.13",
     "spatie/invade": "^2.1",
-    "orchestra/testbench": "^9.6|^10.0"
+    "orchestra/testbench": "^9.6|^10.2.2"
   },
   "autoload": {
     "psr-4": {

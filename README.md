@@ -18,7 +18,7 @@ Make sure that you have an OpenAI API key. You can get one [here](https://platfo
 
 The package comes with a service provider that will automatically register the OpenAI client. You can use the `Denk` facade to access the service.
 
-Make sure to publish the configuration file to set your API key.
+Make sure to publish the configuration file to set your API key and/or change the API url.
 
 ```bash
 php artisan vendor:publish --provider="Denk\DenkServiceProvider"
