@@ -5,6 +5,8 @@ use Denk\Exceptions\DenkException;
 use Denk\Generators\TextGenerator;
 use Denk\ValueObjects\UserMessage;
 use OpenAI\Responses\Chat\CreateResponse;
+use OpenAI\Responses\Chat\CreateStreamedResponse;
+use OpenAI\Responses\StreamResponse;
 
 function fakeText(array $responses = [])
 {
@@ -19,6 +21,19 @@ function fakeText(array $responses = [])
                     ],
                 ],
             ]),
+        ];
+    }
+
+    $denk = new DenkService(new OpenAI\Testing\ClientFake($responses));
+
+    return $denk->text();
+}
+
+function fakeStreamedText(array $responses = [])
+{
+    if (empty($responses)) {
+        $responses = [
+            CreateStreamedResponse::fake(),
         ];
     }
 
@@ -87,3 +102,16 @@ it('can set a temperature', function () {
 
     expect($invaded->temperature)->toBe(0.5);
 });
+
+it('can generate a streamed response', function () {
+    $textGenerator = fakeStreamedText()
+        ->prompt('Hello');
+
+    $response = $textGenerator->generateStreamed();
+
+    expect($response)->toBeInstanceOf(StreamResponse::class);
+});
+
+it('throws an exception when used without a prompt or messages for streamed response', function () {
+    fakeStreamedText()->generateStreamed();
+})->throws(DenkException::class);

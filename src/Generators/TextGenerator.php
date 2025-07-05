@@ -6,6 +6,8 @@ namespace Denk\Generators;
 
 use Denk\Concerns\TextPrompts;
 use Denk\Exceptions\DenkException;
+use OpenAI\Responses\Chat\CreateStreamedResponse;
+use OpenAI\Responses\StreamResponse;
 
 class TextGenerator extends Generator
 {
@@ -53,5 +55,23 @@ class TextGenerator extends Generator
         $content = data_get($data, 'choices.0.message.content');
 
         return $content;
+    }
+
+    /**
+     * Generate a streamed response.
+     *
+     * @return StreamResponse<CreateStreamedResponse>
+     */
+    public function generateStreamed(): StreamResponse
+    {
+        if (is_null($this->messages) || $this->messages->isEmpty()) {
+            throw DenkException::noMessages();
+        }
+
+        return $this->client->chat()->createStreamed([
+            'model' => $this->model,
+            'temperature' => $this->temperature,
+            'messages' => $this->messages->toArray(),
+        ]);
     }
 }

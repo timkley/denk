@@ -66,6 +66,16 @@ $text = $denk->text()
         new UserMessage('Once upon a time'),
     ])
     ->generate();
+
+// Generate a streamed response
+$stream = $denk->text()
+    ->prompt('Write a long story about a pirate')
+    ->generateStreamed();
+
+// Iterate over the stream to get chunks of the response as they arrive
+foreach ($stream as $response) {
+    echo $response->choices[0]->delta->content;
+}
 ```
 
 #### Available models

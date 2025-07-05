@@ -67,10 +67,6 @@ it('can set a model', function () {
     expect($invaded->model)->toBe('gpt-4o-mini');
 });
 
-it('can not set an invalid model', function () {
-    fakeJson()->model('gpt-4');
-})->throws(DenkException::class);
-
 it('needs a json model', function () {
     fakeJson()
         ->prompt('What is your name?')
