@@ -15,16 +15,16 @@
     "illuminate/collections": "^11.34|^12.0",
     "illuminate/http": "^11.34|^12.0",
     "illuminate/support": "^11.34|^12.0",
-    "openai-php/client": "^0.16",
-    "symfony/http-client": "^7.3.1",
+    "openai-php/client": "^0.16.1",
+    "symfony/http-client": "^7.3.3",
     "vlucas/phpdotenv": "^5.6.2"
   },
   "require-dev": {
-    "laravel/pint": "^1.23",
-    "pestphp/pest": "^3.8.2",
-    "phpstan/phpstan": "^2.1.17",
+    "laravel/pint": "^1.24",
+    "pestphp/pest": "^3.8.4",
+    "phpstan/phpstan": "^2.1.25",
     "spatie/invade": "^2.1",
-    "orchestra/testbench": "^9.6|^10.4.0"
+    "orchestra/testbench": "^9.6|^10.6.0"
   },
   "autoload": {
     "psr-4": {
