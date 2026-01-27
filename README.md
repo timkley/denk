@@ -21,7 +21,7 @@ The package comes with a service provider that will automatically register the O
 Make sure to publish the configuration file to set your API key and/or change the API url.
 
 ```bash
-php artisan vendor:publish --provider="Denk\DenkServiceProvider"
+php artisan vendor:publish --tag=config --provider="Denk\DenkServiceProvider"
 ```
 
 After that, you can use the `Denk` facade to access the service like this:
@@ -57,8 +57,9 @@ $denk = new DenkService($client);
 $text = $denk->text()->prompt('Once upon a time')->generate();
 
 // Manually provide messages
-use Denk\Messages\DeveloperMessage;
-use Denk\Messages\UserMessage;
+use Denk\ValueObjects\DeveloperMessage;
+use Denk\ValueObjects\UserMessage;
+use Denk\ValueObjects\AssistantMessage;
 
 $text = $denk->text()
     ->messages([
@@ -80,11 +81,22 @@ foreach ($stream as $response) {
 
 #### Available models
 
-- `gpt-4o-mini`
+- `gpt-4o-mini` (default)
 - `gpt-4o`
 - `gpt-4-turbo`
 - `gpt-4`
 - `gpt-3.5-turbo`
+
+#### Temperature
+
+You can control the randomness of the response by setting the temperature:
+
+```php
+$text = $denk->text()
+    ->prompt('Once upon a time')
+    ->temperature(0.5) // Between 0.0 and 2.0, default is 1.0
+    ->generate();
+```
 
 ### Generating JSON
 
@@ -114,8 +126,20 @@ $json = $denk->json()
 
 #### Available models
 
+- `gpt-4o-mini` (default)
 - `gpt-4o`
-- `gpt-4o-mini`
+
+#### Temperature
+
+You can control the randomness of the response by setting the temperature:
+
+```php
+$json = $denk->json()
+    ->properties([...])
+    ->prompt('...')
+    ->temperature(0.5) // Between 0.0 and 2.0, default is 1.0
+    ->generate();
+```
 
 ### Generating Images
 
@@ -130,13 +154,21 @@ $denk = new DenkService($client);
 
 $image = $denk->image()
     ->prompt('A beautiful sunset over the ocean')
-    ->size('square')
+    ->size('square') // or '1024x1024'
     ->quality('standard')
+    ->model('dall-e-3') // optional, dall-e-3 is default
     ->generate();
+
+// Returns the URL of the generated image
 ```
 
 #### Available image sizes
 
+- `1024x1024` (square)
+- `1792x1024` (landscape)
+- `1024x1792` (portrait)
+
+Or use the convenience aliases:
 - `square`
 - `landscape`
 - `portrait`
@@ -145,3 +177,8 @@ $image = $denk->image()
 
 - `standard`
 - `hd`
+
+#### Available image models
+
+- `dall-e-3` (default)
+- `dall-e-2`
