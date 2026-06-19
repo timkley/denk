@@ -4,6 +4,7 @@ use Denk\DenkService;
 use Denk\Exceptions\DenkException;
 use Denk\Generators\ImageGenerator;
 use OpenAI\Responses\Images\CreateResponse;
+use OpenAI\Testing\ClientFake;
 
 function fakeImage(array $responses = [])
 {
@@ -21,7 +22,7 @@ function fakeImage(array $responses = [])
         ];
     }
 
-    $denk = new DenkService(new OpenAI\Testing\ClientFake($responses));
+    $denk = new DenkService(new ClientFake($responses));
 
     return $denk->image();
 }

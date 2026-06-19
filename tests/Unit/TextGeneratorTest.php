@@ -7,6 +7,7 @@ use Denk\ValueObjects\UserMessage;
 use OpenAI\Responses\Chat\CreateResponse;
 use OpenAI\Responses\Chat\CreateStreamedResponse;
 use OpenAI\Responses\StreamResponse;
+use OpenAI\Testing\ClientFake;
 
 function fakeText(array $responses = [])
 {
@@ -24,7 +25,7 @@ function fakeText(array $responses = [])
         ];
     }
 
-    $denk = new DenkService(new OpenAI\Testing\ClientFake($responses));
+    $denk = new DenkService(new ClientFake($responses));
 
     return $denk->text();
 }
@@ -37,7 +38,7 @@ function fakeStreamedText(array $responses = [])
         ];
     }
 
-    $denk = new DenkService(new OpenAI\Testing\ClientFake($responses));
+    $denk = new DenkService(new ClientFake($responses));
 
     return $denk->text();
 }

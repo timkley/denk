@@ -5,6 +5,7 @@ use Denk\Exceptions\DenkException;
 use Denk\Generators\JsonGenerator;
 use Denk\ValueObjects\UserMessage;
 use OpenAI\Responses\Chat\CreateResponse;
+use OpenAI\Testing\ClientFake;
 
 function fakeJson(array $responses = [])
 {
@@ -25,7 +26,7 @@ function fakeJson(array $responses = [])
         ];
     }
 
-    $denk = new DenkService(new OpenAI\Testing\ClientFake($responses));
+    $denk = new DenkService(new ClientFake($responses));
 
     return $denk->json();
 }
